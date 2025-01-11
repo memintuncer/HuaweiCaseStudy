@@ -1,5 +1,5 @@
 package com.huawei.project;
 
-public class ProjectService {
+public interface ProjectService {
 
 }

@@ -1,5 +1,7 @@
 package com.huawei.part;
 
-public class PartRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PartRepository extends JpaRepository<Part, Long>{
 
 }

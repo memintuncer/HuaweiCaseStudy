@@ -1,5 +1,7 @@
 package com.huawei.model;
 
-public class ModelRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ModelRepository extends JpaRepository<Model, Long>{
 
 }

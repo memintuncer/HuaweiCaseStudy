@@ -1,5 +1,11 @@
 package com.huawei.part;
 
-public class PartController {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+public class PartController {
+	@Autowired
+	private PartService partService;
+	
 }

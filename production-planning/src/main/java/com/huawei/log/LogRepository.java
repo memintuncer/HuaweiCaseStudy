@@ -1,5 +1,7 @@
 package com.huawei.log;
 
-public class LogRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface LogRepository extends JpaRepository<Log, Long>{
 
 }
