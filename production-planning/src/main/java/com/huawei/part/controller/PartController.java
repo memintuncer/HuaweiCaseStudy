@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.huawei.part.entity.Part;
 import com.huawei.part.service.PartService;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -27,8 +26,6 @@ public class PartController {
     private PartService partService;
 
     @PostMapping("/create-part")
-    @Operation(summary = "Create a project with models, parts, and percentages",
-    description = "Mevcut model ve parçaların id'leri ve diğer proje bilgileri üzerinden yeni proje oluşturur.")
     public ResponseEntity<Part> createPart(@RequestBody Part part) {
         Part createdPart = partService.createPart(part);
         return ResponseEntity.ok(createdPart);

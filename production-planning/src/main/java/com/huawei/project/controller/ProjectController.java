@@ -32,8 +32,9 @@ public class ProjectController {
 
     @PostMapping("/create")
     @Operation(
-    		summary = "Create a new project", 
-    		description = "Yeni bir proje oluşturur")
+	    summary = "Create a new project",
+	    description = "Yeni bir proje oluşturur. Proje bilgileri, modeller ve plan türüne göre kaydedilir."
+    )
     public ResponseEntity<Project> createProject(@RequestBody ProjectRequest request) {
         
     	Project createdProject = projectService.createProject(request);
@@ -66,7 +67,9 @@ public class ProjectController {
     @Operation(
         summary = "Change a project type with models and percentages",
         description = "Mevcut bir projenin plan türünü günceller. Yeni bir type girildiğinde, eski değerler mevcutsa kullanılır."
-        		+ "Eğer eski değerler yoksa yeni değerler kullanılır"
+        		+ "Eğer eski değerler yoksa yeni değerler kullanılır. Eğer önceki bir plantype'a dönülmek isteniyorsa"
+        		+ "sadece currentPlan bilgisi input olarak girilebilir. Yeni bir type değeri kullanılacaksa modellerin yüzdelik değerleri, "
+        		+ "priyodlar input olarak girilmelidir"
     )
     public ResponseEntity<Project> changeProjectType(
             @PathVariable("id") @Parameter(description = "Güncellenecek projenin ID değeri") Long id,
@@ -78,7 +81,7 @@ public class ProjectController {
     @PutMapping("/{id}/toggle-models")
     @Operation(
         summary = "Change activity for models in project",
-        description = "FIXED projeler için modellerin aktiflik durumunu değiştirir"
+        description = "FIXED projeler için modellerin aktiflik durumunu değiştirir. Modellerin id değerlerini input olarak alır"
     )
     public ResponseEntity<Void> toggleModelActivity(
     		@PathVariable("id") @Parameter(description = "Güncellenecek projenin ID değeri") Long id,
@@ -99,15 +102,19 @@ public class ProjectController {
     
     @GetMapping("/{projectId}/calculate-parts")
     @Operation(
-        summary = "Calculate total parts per project",
-        description = "Bir proje için toplam parça adetini hesaplar ve PlanType'a göre çıktıyı düzenler."
-    )
+	    summary = "Calculate total parts per project",
+	    description = "Bir proje için toplam parça adetini hesaplar. Plan türüne (FIXED, MONTHLY, WEEKLY) göre hesaplama yapılır."
+	)
     public ResponseEntity<List<String>> calculatePartQuantitiesForProject(@PathVariable("projectId") @Parameter(description = "Projenin ID değeri") Long projectId) {
         List<String> result = projectService.calculatePartQuantitiesForProject(projectId);
         return ResponseEntity.ok(result);
     }
     
     @DeleteMapping("/soft-delete/{id}")
+    @Operation(
+	    summary = "Soft delete a project",
+	    description = "Projeyi soft delete yapar (isDeleted = true). Proje fiziksel olarak silinmez."
+    )
     public ResponseEntity<String> softDeleteProject(@PathVariable("projectId") @Parameter(description = "Silinmesi veya iptal edilmesi istenen proje id'si") Long id) {
         projectService.softDeleteProject(id);
         return ResponseEntity.ok("Project with ID " + id + " has been soft deleted.");

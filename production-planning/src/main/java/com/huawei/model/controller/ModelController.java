@@ -30,10 +30,9 @@ public class ModelController {
 
     @PostMapping("/create")
     @Operation(
-        summary = "Create a new model",
-        description = "Yeni bir model oluşturur. İsteğe bağlı olarak parça bilgileriyle birlikte model oluşturulabilir."
-    )
-    
+    	    summary = "Create a new model",
+    	    description = "Yeni bir model oluşturur. Modele parçalar eklenebilir. Model parça bilgisi eklenmeden de oluşturulabilir."
+    	)
     public ResponseEntity<Model> createModel(@RequestBody Model request) {
         Model createdModel = modelService.createModel(request);
         return ResponseEntity.ok(createdModel);
@@ -41,9 +40,10 @@ public class ModelController {
     
     @PostMapping("/{modelId}/add-parts")
     @Operation(
-        summary = "Add parts to a model",
-        description = "Bir modele bir veya daha fazla parça ekler."
-    )
+    	    summary = "Add parts to a model",
+    	    description = "Bir modele bir veya birden fazla parça ekler. Parçalar model_part ilişkisi üzerinden yönetilir."
+    	    		+ "Model oluşturulurken parça bilgilerinin girilmesi zorunlu değildir"
+    	)
     public ResponseEntity<Void> addPartsToModel(
             @PathVariable("modelId") @Parameter(description = "Güncellenecek modelin ID değeri") Long modelId,
             @RequestBody List<ModelPart> parts) {
@@ -53,9 +53,9 @@ public class ModelController {
     
     @PatchMapping("/{modelId}/update-parts")
     @Operation(
-        summary = "Update parts of a model",
-        description = "Bir modeldeki mevcut parçaların miktarını günceller."
-    )
+    	    summary = "Update quantity of parts in a model",
+    	    description = "Bir modelde bulunan parçaların miktarlarını günceller. Parça ID ve miktar bilgilerini alır."
+    	)
     public ResponseEntity<Void> updateModelParts(
     		@PathVariable("modelId") @Parameter(description = "Güncellenecek modelin ID değeri") Long modelId,
             @RequestBody List<ModelPart> parts) {
