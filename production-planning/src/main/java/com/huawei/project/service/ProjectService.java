@@ -14,4 +14,5 @@ public interface ProjectService {
     List<Project> getAllProjects();
     List<String> getModelsByPercentages(Long projectId);
 	List<String> calculatePartQuantitiesForProject(Long projectId);
+	void softDeleteProject(Long id);
 }

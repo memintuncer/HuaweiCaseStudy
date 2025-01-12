@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -104,5 +105,11 @@ public class ProjectController {
     public ResponseEntity<List<String>> calculatePartQuantitiesForProject(@PathVariable("projectId") @Parameter(description = "Projenin ID değeri") Long projectId) {
         List<String> result = projectService.calculatePartQuantitiesForProject(projectId);
         return ResponseEntity.ok(result);
+    }
+    
+    @DeleteMapping("/soft-delete/{id}")
+    public ResponseEntity<String> softDeleteProject(@PathVariable("projectId") @Parameter(description = "Silinmesi veya iptal edilmesi istenen proje id'si") Long id) {
+        projectService.softDeleteProject(id);
+        return ResponseEntity.ok("Project with ID " + id + " has been soft deleted.");
     }
 }

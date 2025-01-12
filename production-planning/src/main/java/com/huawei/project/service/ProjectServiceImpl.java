@@ -1,5 +1,6 @@
 package com.huawei.project.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -203,5 +204,14 @@ public class ProjectServiceImpl implements ProjectService {
         });
 
         return result;
+    }
+    
+    @Override
+    public void softDeleteProject(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow();
+
+        project.setIsDeleted(true); 
+        project.setUpdatedAt(LocalDateTime.now());
+        projectRepository.save(project);
     }
 }
