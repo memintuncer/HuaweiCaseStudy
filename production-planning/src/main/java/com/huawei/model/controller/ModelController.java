@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,5 +61,17 @@ public class ModelController {
             @RequestBody List<ModelPart> parts) {
         modelService.updateModelParts(modelId, parts);
         return ResponseEntity.ok().build();
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Model> getModelById(@PathVariable("id") @Parameter(description = "Sorgulanacak modelin id'si") Long id) {
+        Model model = modelService.getModelById(id);
+        return ResponseEntity.ok(model);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Model>> getAllModels() {
+        List<Model> models = modelService.getAllModels();
+        return ResponseEntity.ok(models);
     }
 }

@@ -1,5 +1,8 @@
 package com.huawei.modelPart.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,8 @@ import com.huawei.modelPart.entity.ModelPart;
 import com.huawei.modelPart.repository.ModelPartRepository;
 import com.huawei.part.entity.Part;
 import com.huawei.part.repository.PartRepository;
+import com.huawei.percentage.entity.Percentage;
+import com.huawei.project.entity.Project;
 
 @Service
 public class ModelPartServiceImpl implements ModelPartService {
@@ -50,5 +55,26 @@ public class ModelPartServiceImpl implements ModelPartService {
         modelPartRepository.save(modelPart);
 
         logService.logPartQuantityChange(model, modelPart.getPart(), oldQuantity, quantity);
+    }
+	
+	@Override
+    public Map<Part, Integer> calculatePartCounts(Project project, Percentage percentage) {
+        List<ModelPart> modelParts;
+        if (percentage != null) {
+            modelParts = modelPartRepository.findByModelAndProject(percentage.getModel());
+        } else {
+            modelParts = modelPartRepository.findByProjectAndActiveModels(project);
+        }
+
+        Map<Part, Integer> partCounts = new HashMap<>();
+        for (ModelPart modelPart : modelParts) {
+            Part part = modelPart.getPart();
+            int count = modelPart.getQuantity();
+            int total = percentage != null
+                    ? (int) Math.round(percentage.getPercentage() / 100.0 * project.getTotalProductionGoal() * count)
+                    : project.getTotalProductionGoal() * count;
+            partCounts.merge(part, total, Integer::sum);
+        }
+        return partCounts;
     }
 }

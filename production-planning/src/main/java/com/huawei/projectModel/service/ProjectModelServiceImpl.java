@@ -62,4 +62,9 @@ public class ProjectModelServiceImpl implements ProjectModelService{
             percentageService.savePercentages(project, model, percentages, planType);
         }
     }
+
+	@Override
+	public ProjectModel findByProjectAndModel(Project project, Model model) {
+		return projectModelRepository.findByProjectAndModel(project, model);
+	}
 }

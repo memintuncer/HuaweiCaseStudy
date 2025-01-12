@@ -85,4 +85,24 @@ public class ProjectController {
         projectService.changeModelActivity(id, modelIds);
         return ResponseEntity.ok().build();
     }
+    
+    @GetMapping("/{projectId}/models-by-percentages")
+    @Operation(
+        summary = "List models by percentages",
+        description = "Projede bulunan modelleri yüzdelik değerlerine göre listeler. PlanType'a bağlı olarak sıralama ve gruplama yapılır."
+    )
+    public ResponseEntity<List<String>> getModelsByPercentages(@PathVariable("projectId") @Parameter(description = "Projenin ID değeri") Long projectId) {
+        List<String> result = projectService.getModelsByPercentages(projectId);
+        return ResponseEntity.ok(result);
+    }
+    
+    @GetMapping("/{projectId}/calculate-parts")
+    @Operation(
+        summary = "Calculate total parts per project",
+        description = "Bir proje için toplam parça adetini hesaplar ve PlanType'a göre çıktıyı düzenler."
+    )
+    public ResponseEntity<List<String>> calculatePartQuantitiesForProject(@PathVariable("projectId") @Parameter(description = "Projenin ID değeri") Long projectId) {
+        List<String> result = projectService.calculatePartQuantitiesForProject(projectId);
+        return ResponseEntity.ok(result);
+    }
 }

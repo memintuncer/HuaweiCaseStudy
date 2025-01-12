@@ -1,6 +1,9 @@
 package com.huawei.percentage.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +61,44 @@ public class PercentageServiceImpl implements PercentageService {
     
     @Override
     public List<Percentage> getExistingPercentagesForPlanType(Project project, PlanType planType) {
+        return percentageRepository.findByProjectAndPlanType(project, planType);
+    }
+    
+    @Override
+    public List<String> getFixedModels(Project project) {
+        // FIXED plan için yüzdeleri al ve sırala
+        List<Percentage> percentages = percentageRepository.findByProjectAndPlanType(project, PlanType.FIXED);
+        percentages.sort((p1, p2) -> Float.compare(p2.getPercentage(), p1.getPercentage()));
+
+        List<String> result = new ArrayList<>();
+        result.add(project.getName() + " projesinde");
+        for (Percentage percentage : percentages) {
+            result.add("-" + percentage.getModel().getName() + " modeli %" + percentage.getPercentage() + " oranında üretilecektir.");
+        }
+        return result;
+    }
+
+    @Override
+    public List<String> getGroupedModels(Project project, PlanType planType) {
+        // PlanType için yüzdeleri al ve grupla
+        List<Percentage> percentages = percentageRepository.findByProjectAndPlanType(project, planType);
+        Map<String, List<Percentage>> grouped = percentages.stream()
+                .collect(Collectors.groupingBy(Percentage::getDateRange));
+
+        List<String> result = new ArrayList<>();
+        result.add(project.getName() + " projesinde");
+        grouped.forEach((dateRange, group) -> {
+            result.add(dateRange +"Üretim Periyodu için");
+            group.sort((p1, p2) -> Float.compare(p2.getPercentage(), p1.getPercentage()));
+            for (Percentage percentage : group) {
+                result.add("-" + percentage.getModel().getName() + " modeli %" + percentage.getPercentage() + " oranında üretilecektir.");
+            }
+        });
+        return result;
+    }
+    
+    @Override
+    public List<Percentage> getPercentagesByProjectAndPlanType(Project project, PlanType planType) {
         return percentageRepository.findByProjectAndPlanType(project, planType);
     }
 }

@@ -1,5 +1,7 @@
 package com.huawei.part.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +17,15 @@ public class PartServiceImpl implements PartService {
     @Override
     public Part createPart(Part part) {
         return partRepository.save(part);
+    }
+    
+    @Override
+    public Part getPartById(Long id) {
+        return partRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Part> getAllParts() {
+        return partRepository.findAll();
     }
 }

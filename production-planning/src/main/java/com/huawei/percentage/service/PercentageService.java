@@ -15,4 +15,7 @@ public interface PercentageService {
     List<Percentage> getExistingPercentages(Project project, Model model, PlanType planType);
     void savePercentages(Project project, Model model, List<ProjectUpdateRequest.PercentageUpdateRequest> percentages, PlanType planType);
     List<Percentage> getExistingPercentagesForPlanType(Project project, PlanType planType);
+    List<String> getFixedModels(Project project);
+    List<String> getGroupedModels(Project project, PlanType planType);
+	List<Percentage> getPercentagesByProjectAndPlanType(Project project, PlanType planType);
 }

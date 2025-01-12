@@ -12,4 +12,6 @@ public interface ProjectService {
     void changeModelActivity(Long projectId, List<Long> modelIds);
     Project getProjectById(Long projectId);
     List<Project> getAllProjects();
+    List<String> getModelsByPercentages(Long projectId);
+	List<String> calculatePartQuantitiesForProject(Long projectId);
 }

@@ -1,6 +1,7 @@
 package com.huawei.log.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,5 +69,20 @@ public class LogServiceImpl implements LogService {
         log.setDetails(part.getName() + " parçasının miktarı " + oldQuantity + " -> " + newQuantity + " olarak güncellendi. Model: " + model.getName());
         log.setTimestamp(LocalDateTime.now());
         logRepository.save(log);
+    }
+    
+    @Override
+    public Log getLogById(Long id) {
+        return logRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Log> getAllLogs() {
+        return logRepository.findAll();
+    }
+
+    @Override
+    public List<Log> getLogsByAction(LogActions action) {
+        return logRepository.findByAction(action);
     }
 }

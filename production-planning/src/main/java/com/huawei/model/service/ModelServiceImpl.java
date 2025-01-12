@@ -60,4 +60,14 @@ public class ModelServiceImpl implements ModelService {
             modelPartService.updatePartQuantity(model, partRequest.getPart().getId(), partRequest.getQuantity());
         }
     }
+    
+    @Override
+    public Model getModelById(Long id) {
+        return modelRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Model> getAllModels() {
+        return modelRepository.findAll();
+    }
 }
