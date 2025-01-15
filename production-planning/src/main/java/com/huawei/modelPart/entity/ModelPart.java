@@ -1,7 +1,7 @@
 package com.huawei.modelPart.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.huawei.model.entity.Model;
 import com.huawei.part.entity.Part;
 
@@ -28,7 +28,8 @@ public class ModelPart {
 
     @ManyToOne
     @JoinColumn(name = "part_id", nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Part part;
 
     private Integer quantity;
